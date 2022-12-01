@@ -70,10 +70,10 @@
 
             <div class="header-nav">
                 <ul class="header-nav__list">
-                    <li class="header-nav__link"><a href="index.html">Главная</a></li>
-                    <li class="header-nav__link"><a href="about.html">О нас</a></li>
-                    <li class="header-nav__link"><a href="events.html">Мероприятия организации</a></li>
-                    <li class="header-nav__link active"><a href="index.html">Пушкинская карта</a></li>
+                    <li class="header-nav__link"><a href="{{ route('index') }}">Главная</a></li>
+                    <li class="header-nav__link"><a href="{{ route('about') }}">О нас</a></li>
+                    <li class="header-nav__link"><a href="{{ route('events') }}">Мероприятия организации</a></li>
+                    <li class="header-nav__link active"><a href="{{ route('excursions') }}">Пушкинская карта</a></li>
                     <li class="header-nav__link"><a href="#">Законодательство</a></li>
                     <li class="header-nav__link"><a href="#">Контакты</a></li>
                 </ul>

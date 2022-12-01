@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\Frontend\AboutController;
+use App\Http\Controllers\Frontend\EventController;
+use App\Http\Controllers\Frontend\ExcursionController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +19,21 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('frontend.pages.excursions');
 });
+
+/* Routs for guests */
+Route::middleware('guest')->group(function () {
+
+    /* Excursion */
+    Route::get('/', [ExcursionController::class, 'index'])->name('index');
+    Route::get('/excursions', [ExcursionController::class, 'index'])->name('excursions');
+    Route::get('/excursions/{id}', [ExcursionController::class, 'single'])->name('single-excursion');
+
+    /* Event */
+    Route::get('/events', [EventController::class, 'index'])->name('events');
+
+    /* About */
+    Route::get('/about', [AboutController::class, 'index'])->name('about');
+
+});
+
+/* Routes for admin */

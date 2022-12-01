@@ -7,10 +7,10 @@
                 </div>
                 <div class="header-nav">
                     <ul class="header-nav__list">
-                        <li class="header-nav__link"><a href="#">Главная</a></li>
-                        <li class="header-nav__link"><a href="#">О нас</a></li>
-                        <li class="header-nav__link"><a href="#">Мероприятия организации</a></li>
-                        <li class="header-nav__link"><a href="#">Пушкинская карта</a></li>
+                        <li class="header-nav__link"><a href="{{ route('index') }}">Главная</a></li>
+                        <li class="header-nav__link"><a href="{{ route('about') }}">О нас</a></li>
+                        <li class="header-nav__link"><a href="{{ route('events') }}">Мероприятия организации</a></li>
+                        <li class="header-nav__link"><a href="{{ route('excursions') }}">Пушкинская карта</a></li>
                         <li class="header-nav__link"><a href="#">Законодательство</a></li>
                         <li class="header-nav__link"><a href="#">Контакты</a></li>
                     </ul>

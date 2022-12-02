@@ -73,7 +73,7 @@
                     <li class="header-nav__link"><a href="{{ route('index') }}">Главная</a></li>
                     <li class="header-nav__link"><a href="{{ route('about') }}">О нас</a></li>
                     <li class="header-nav__link"><a href="{{ route('events') }}">Мероприятия организации</a></li>
-                    <li class="header-nav__link active"><a href="{{ route('excursions') }}">Пушкинская карта</a></li>
+                    <li class="header-nav__link"><a href="{{ route('excursions') }}">Пушкинская карта</a></li>
                     <li class="header-nav__link"><a href="#">Законодательство</a></li>
                     <li class="header-nav__link"><a href="#">Контакты</a></li>
                 </ul>
@@ -84,10 +84,10 @@
     <div class="mobile_menu_container">
         <div class="mobile_menu_content">
             <ul>
-                <li><a href="index.html">Главная</a></li>
-                <li><a href="about.html">О нас</a></li>
-                <li><a href="events.html">Мероприятия организации</a></li>
-                <li><a href="index.html">Пушкинская карта</a></li>
+                <li><a href="{{ route('index') }}">Главная</a></li>
+                <li><a href="{{ route('about') }}">О нас</a></li>
+                <li><a href="{{ route('events') }}">Мероприятия организации</a></li>
+                <li><a href="{{ route('excursions') }}">Пушкинская карта</a></li>
                 <li><a href="#">Законодательство</a></li>
                 <li><a href="#">Контакты</a></li>
             </ul>

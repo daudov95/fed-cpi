@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\Frontend\AboutController;
+use App\Http\Controllers\Frontend\DetailsController;
 use App\Http\Controllers\Frontend\EventController;
 use App\Http\Controllers\Frontend\ExcursionController;
+use App\Http\Controllers\Frontend\PaymentController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -33,6 +35,12 @@ Route::middleware('guest')->group(function () {
 
     /* About */
     Route::get('/about', [AboutController::class, 'index'])->name('about');
+
+    /* Payment */
+    Route::get('/details/payment', [DetailsController::class, 'payment'])->name('payment');
+
+    /* Details */
+    Route::get('/details', [DetailsController::class, 'index'])->name('details');
 
 });
 

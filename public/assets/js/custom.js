@@ -33,15 +33,18 @@ $(function() {
 
 const price = document.querySelector('.card-price__scroll')
 
-price.addEventListener('click', function (e) {
-  e.preventDefault()
-  const blockID = price.getAttribute('href').substr(1)
-  
-  document.getElementById(blockID).scrollIntoView({
-    behavior: 'smooth',
-    block: 'start'
+if(price) {
+  price.addEventListener('click', function (e) {
+    e.preventDefault()
+    const blockID = price.getAttribute('href').substr(1)
+    
+    document.getElementById(blockID).scrollIntoView({
+      behavior: 'smooth',
+      block: 'start'
+    })
   })
-})
+}
+
 
 
 

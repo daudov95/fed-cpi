@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Backend\AdminController;
 use App\Http\Controllers\Frontend\AboutController;
 use App\Http\Controllers\Frontend\DetailsController;
 use App\Http\Controllers\Frontend\EventController;
@@ -45,3 +46,22 @@ Route::middleware('guest')->group(function () {
 });
 
 /* Routes for admin */
+Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
+
+    /* Dashboard */
+    Route::get('/', [AdminController::class, 'index'])->name('index');
+
+    /* Excursion */
+    Route::group(['prefix' => 'excursion', 'as' => 'excursion.'], function () {
+        Route::get('/', [AdminController::class, 'excursion'])->name('index');
+        Route::get('/create', [AdminController::class, 'excursionCreate'])->name('create');
+        Route::get('/edit/{id}', [AdminController::class, 'excursionEdit'])->name('edit');
+        Route::post('/store', [AdminController::class, 'excursionStore'])->name('store');
+        Route::post('/update', [AdminController::class, 'excursionUpdate'])->name('update');
+        Route::post('/delete', [AdminController::class, 'excursionDelete'])->name('delete');
+        Route::post('/image/delete', [AdminController::class, 'excursionDeleteImage'])->name('delete.image');
+    });
+
+
+    /* Others */
+})->middleware('guest');

@@ -21,4 +21,20 @@ class Excursion extends Model
     {
         return $this->hasMany(ExcursionSchedule::class);
     }
+
+    public function getExcerptAttribute()
+    {
+        return strip_tags(str()->limit($this->description, 280));
+    }
+
+    public function getImageAttribute()
+    {
+//        dd($this->images);
+        $img = 'https://www.steaua-dunarii.ro/client/img/image-not-found.png';
+        if(count($this->images)) {
+//            $img = $this->images[0]->link;
+            $img = asset('storage/excursion'.$this->images[0]->link);
+        }
+        return $img;
+    }
 }

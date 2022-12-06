@@ -20,10 +20,6 @@
                         <span class="details-info__title">Телефон:</span>
                         <span class="details-info__value">8(925) 748-53-14</span>
                     </div>
-                    <div class="details-info__row">
-                        <span class="details-info__title">Факс:</span>
-                        <span class="details-info__value">8(925) 748-53-14</span>
-                    </div>
 
                     <div class="details-info__row">
                         <span class="details-info__title">Режим работы:</span>

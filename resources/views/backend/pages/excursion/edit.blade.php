@@ -92,15 +92,6 @@
                         <input type="text" class="form-control" id="including" name="including" value="{{ $excursion->including }}" placeholder="Заголовок поста">
                     </div>
 
-                    @if($excursion->image)
-                        <div class="row">
-                            <div class="col-12">
-                                <img src="{{ asset('storage/'.$section->image) }}" alt="Section image" style="max-width: 100%">
-                            </div>
-                        </div>
-                    @endif
-
-
 
                     <div class="form-group">
                         <label for="picture">Картинки (Формат: jpg, png)</label>

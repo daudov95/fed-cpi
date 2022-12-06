@@ -92,6 +92,12 @@ class AdminController extends Controller
         return redirect()->back()->with('success', 'Экскурсия успешно обновлена');
     }
 
+    public function excursionSchedule(int $id): View
+    {
+        $excursion = Excursion::findOrFail($id);
+        return view('backend.pages.excursion.schedule.index', compact('excursion'));
+    }
+
     public function excursionDeleteImage(Request $request): JsonResponse
     {
         $image = ExcursionImage::find($request->id);

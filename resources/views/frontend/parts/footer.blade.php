@@ -17,28 +17,28 @@
                         <a href="{{ route('excursions') }}" class="footer__link">Пушкинская карта</a>
                     </li>
                     <li class="footer__item">
-                        <a href="#" class="footer__link">Законодательство</a>
+                        <a href="{{ route('legislation') }}" class="footer__link">Законодательство</a>
                     </li>
                     <li class="footer__item">
-                        <a href="#" class="footer__link">Контакты</a>
+                        <a href="{{ route('contacts') }}" class="footer__link">Контакты</a>
                     </li>
                 </ul>
             </div>
             <div class="footer__col">
                 <h5 class="footer__title">Информация</h5>
                 <ul class="footer__list">
-                    <li class="footer__item">
-                        <a href="#" class="footer__link">Политика конфиденциальности</a>
-                    </li>
+{{--                    <li class="footer__item">--}}
+{{--                        <a href="#" class="footer__link">Политика конфиденциальности</a>--}}
+{{--                    </li>--}}
                     <li class="footer__item">
                         <a href="{{ route('details') }}" class="footer__link">Реквизиты</a>
                     </li>
                     <li class="footer__item">
                         <a href="{{ route('payment') }}" class="footer__link">Оплата</a>
                     </li>
-                    <li class="footer__item">
-                        <a href="#" class="footer__link">Оферта</a>
-                    </li>
+{{--                    <li class="footer__item">--}}
+{{--                        <a href="#" class="footer__link">Оферта</a>--}}
+{{--                    </li>--}}
                 </ul>
             </div>
             <div class="footer__col footer__col--end">

@@ -2,9 +2,11 @@
 
 use App\Http\Controllers\Backend\AdminController;
 use App\Http\Controllers\Frontend\AboutController;
+use App\Http\Controllers\Frontend\ContactsController;
 use App\Http\Controllers\Frontend\DetailsController;
 use App\Http\Controllers\Frontend\EventController;
 use App\Http\Controllers\Frontend\ExcursionController;
+use App\Http\Controllers\Frontend\LegislationController;
 use App\Http\Controllers\Frontend\PaymentController;
 use Illuminate\Support\Facades\Route;
 
@@ -43,6 +45,12 @@ Route::middleware('guest')->group(function () {
     /* Details */
     Route::get('/details', [DetailsController::class, 'index'])->name('details');
 
+    /* legislation */
+    Route::get('/legislation', [LegislationController::class, 'index'])->name('legislation');
+
+    /* Contact */
+    Route::get('/contacts', [ContactsController::class, 'index'])->name('contacts');
+
 });
 
 /* Routes for admin */
@@ -60,6 +68,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
         Route::post('/update', [AdminController::class, 'excursionUpdate'])->name('update');
         Route::post('/delete', [AdminController::class, 'excursionDelete'])->name('delete');
         Route::post('/image/delete', [AdminController::class, 'excursionDeleteImage'])->name('delete.image');
+        Route::get('/edit/{id}/schedule', [AdminController::class, 'excursionSchedule'])->name('schedule.index');
     });
 
 

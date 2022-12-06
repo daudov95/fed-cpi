@@ -23,7 +23,7 @@
                                 @if(isset($excursion->schedules))
                                     @foreach($excursion->images as $image)
                                         <div class="swiper-slide">
-                                            <img src="{{ $image->link }}" alt="img">
+                                            <img src="{{ asset('storage/excursion'.$image->link) }}" alt="img">
                                         </div>
                                     @endforeach
                                 @endif
@@ -42,7 +42,7 @@
                     <div class="card">
                         <div class="card-info">
                             <h3 class="card-info__title">{{ $excursion->title }}</h3>
-                            <p class="card-info__desc">{!! $excursion->description !!}</p>
+                            {!! $excursion->description !!}
 
                             <ul class="card-info__list">
                                 <li class="card-info-item">

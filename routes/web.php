@@ -41,6 +41,11 @@ Route::middleware('guest')->group(function () {
 
     /* Payment */
     Route::get('/details/payment', [DetailsController::class, 'payment'])->name('payment');
+    Route::get('/payment/success', [PaymentController::class, 'success'])->name('payment.success');
+    Route::get('/payment/cancel', [PaymentController::class, 'cancel'])->name('payment.cancel');
+    Route::get('/payment/error', [PaymentController::class, 'error'])->name('payment.error');
+    Route::get('/payment/{id}', [PaymentController::class, 'payment'])->name('payment.index');
+    Route::post('/payment/{id}', [PaymentController::class, 'paymentStore'])->name('payment.store');
 
     /* Details */
     Route::get('/details', [DetailsController::class, 'index'])->name('details');
@@ -69,6 +74,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
         Route::post('/delete', [AdminController::class, 'excursionDelete'])->name('delete');
         Route::post('/image/delete', [AdminController::class, 'excursionDeleteImage'])->name('delete.image');
         Route::get('/edit/{id}/schedule', [AdminController::class, 'excursionSchedule'])->name('schedule.index');
+        Route::post('/edit/{id}/schedule', [AdminController::class, 'excursionScheduleStore'])->name('schedule.store');
+        Route::post('/edit/{id}/schedule-delete', [AdminController::class, 'excursionScheduleDelete'])->name('schedule.delete');
     });
 
 

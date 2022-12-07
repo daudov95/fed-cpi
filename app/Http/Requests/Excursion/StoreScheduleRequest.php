@@ -4,7 +4,7 @@ namespace App\Http\Requests\Excursion;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateExcursionRequest extends FormRequest
+class StoreScheduleRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,15 +24,9 @@ class UpdateExcursionRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => ['required'],
-            'description' => ['required'],
-            'price' => ['required'],
-            'age' => ['required'],
-            'place' => ['required'],
-            'program' => ['required'],
-            'duration' => ['required'],
-            'including' => ['required'],
-            'images.*' => ['required', 'image', 'mimes:jpg,jpeg,png'],
+            'id' => ['required'],
+            'schedule_time' => ['required'],
+            'schedule_price' => ['required'],
         ];
     }
 }

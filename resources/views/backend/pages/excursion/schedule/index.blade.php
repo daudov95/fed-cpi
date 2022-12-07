@@ -31,9 +31,6 @@
             </div>
 
 
-            <form method="POST" action="{{ route('admin.excursion.update') }}" enctype="multipart/form-data">
-                @CSRF
-                <input type="hidden" name="id" value="{{ $excursion->id }}">
                 <div class="card-body">
 
                     <div class="card card-info">
@@ -55,16 +52,18 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <td>05.12.2022 10:00</td>
-                                    <td>3500</td>
-                                    <td class="text-right py-0 align-middle">
-                                        <div class="btn-group btn-group-sm">
-                                            <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                                            <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
-                                        </div>
-                                    </td>
-                                </tr>
+                                @foreach($excursion->schedules as $schedule)
+
+                                    <tr>
+                                        <td>{{ $schedule->CustomDate }}</td>
+                                        <td>{{ $schedule->price }}</td>
+                                        <td class="text-right py-0 align-middle">
+                                            <div class="btn-group btn-group-sm">
+                                                <a href="{{ route('admin.excursion.schedule.delete', ['id' => $excursion->id]) }}" class="btn btn-danger delete-schedule" data-id="{{ $schedule->id }}"><i class="fas fa-trash"></i></a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -76,12 +75,14 @@
                         </div>
 
 
-                        <form class="form-horizontal">
+                        <form class="form-horizontal" method="POST" action="{{ route('admin.excursion.schedule.store', ['id' => $excursion->id]) }}">
+                            @CSRF
+                            <input type="hidden" name="id" value="{{ $excursion->id }}">
                             <div class="card-body">
                                 <div class="form-group row">
                                     <label for="schedule" class="col-sm-2 col-form-label">Время</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="schedule" name="schedule_time" placeholder="{{ date('d.m.Y H:i') }}">
+                                        <input type="text" class="form-control" id="schedule" name="schedule_time" placeholder="{{ date('d.m.Y H:00') }}">
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -103,10 +104,7 @@
 
                 </div>
 
-                <div class="card-footer">
-                    <button type="submit" class="btn btn-primary">Обновить</button>
-                </div>
-            </form>
+
         </div>
 
     </div>
@@ -118,7 +116,7 @@
 
 @section('custom_script')
     <script>
-        const deleteLinks = document.querySelectorAll('.delete-image');
+        const deleteLinks = document.querySelectorAll('.delete-schedule');
 
         deleteLinks.forEach(link => {
             link.addEventListener('click', async (e) => {
@@ -137,12 +135,11 @@
                         }
                     })
 
+
                     window.location.reload()
                 }catch (e) {
                     console.log('error');
                 }
-
-
 
             })
         })

@@ -12,12 +12,12 @@
             <div class="inner">
 {{--              <h3>{{ $info['posts'] }}</h3>--}}
 
-              <p>Посты</p>
+              <p>Экскурсии</p>
             </div>
             <div class="icon">
               <i class="ion ion-compose"></i>
             </div>
-            <a href="#" class="small-box-footer">Подробнее <i class="fas fa-arrow-circle-right"></i></a>
+            <a href="{{ route('admin.excursion.index') }}" class="small-box-footer">Подробнее <i class="fas fa-arrow-circle-right"></i></a>
           </div>
         </div>
         <!-- ./col -->
@@ -27,7 +27,7 @@
             <div class="inner">
 {{--              <h3>{{ $info['subscribers'] }}</h3>--}}
 
-              <p>Подписчики</p>
+              <p>В разработке</p>
             </div>
             <div class="icon">
               <i class="ion ion-stats-bars"></i>
@@ -42,7 +42,7 @@
             <div class="inner">
 {{--              <h3>{{ $info['users'] }}</h3>--}}
 
-              <p>Пользователи</p>
+              <p>В разработке</p>
             </div>
             <div class="icon">
               <i class="ion ion-person-add"></i>
@@ -57,7 +57,7 @@
             <div class="inner">
 {{--              <h3>{{ $info['questions_count'] }}</h3>--}}
 
-              <p>Вопросы</p>
+              <p>В разработке</p>
             </div>
             <div class="icon">
               <i class="ion ion-android-chat"></i>

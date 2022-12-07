@@ -10,7 +10,7 @@ class Excursion extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'description', 'price', 'including', 'program', 'age', 'place', 'start_place', 'end_place'];
+    protected $fillable = ['title', 'description', 'price', 'including', 'program', 'age', 'place', 'duration'];
 
     public function images(): HasMany
     {
@@ -36,5 +36,10 @@ class Excursion extends Model
             $img = asset('storage/excursion'.$this->images[0]->link);
         }
         return $img;
+    }
+
+    public function getNearExcursionAttribute()
+    {
+        return $this->schedules()->where('time', '>', time())->orderBy('time', 'ASC')->first()->customDate ?? 'Нет данных';
     }
 }

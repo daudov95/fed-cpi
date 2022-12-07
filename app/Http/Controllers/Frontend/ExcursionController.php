@@ -24,7 +24,8 @@ class ExcursionController extends Controller
     public function single($id): View
     {
         $excursion = Excursion::findOrFail($id);
+        $schedules = $excursion->schedules()->where('time','>', time())->orderBy('time', 'ASC')->get();
 
-        return view('frontend.pages.excursion-single', compact('excursion'));
+        return view('frontend.pages.excursion-single', compact('excursion', 'schedules'));
     }
 }

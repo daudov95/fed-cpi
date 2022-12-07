@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Excursion\DeleteExcursionRequest;
 use App\Http\Requests\Excursion\StoreExcursionRequest;
+use App\Http\Requests\Excursion\StoreScheduleRequest;
 use App\Http\Requests\Excursion\UpdateExcursionRequest;
 use App\Models\Excursion;
 use App\Models\ExcursionImage;
+use App\Models\ExcursionSchedule;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -50,9 +52,8 @@ class AdminController extends Controller
             'age' => $request->age,
             'place' => $request->place,
             'program' => $request->program,
+            'duration' => $request->duration,
             'including' => $request->including,
-            'start_place' => 'Грозный',
-            'end_place' => 'Грозный',
         ]);
 
         foreach ($images_url as $image) {
@@ -77,9 +78,8 @@ class AdminController extends Controller
             'age' => $request->age,
             'place' => $request->place,
             'program' => $request->program,
+            'duration' => $request->duration,
             'including' => $request->including,
-            'start_place' => 'Грозный',
-            'end_place' => 'Грозный',
         ]);
 
         foreach ($images_url as $image) {
@@ -98,6 +98,40 @@ class AdminController extends Controller
         return view('backend.pages.excursion.schedule.index', compact('excursion'));
     }
 
+    public function excursionScheduleStore(StoreScheduleRequest $request): RedirectResponse
+    {
+        $time = strtotime($request->schedule_time);
+        $price = $request->schedule_price;
+
+        ExcursionSchedule::create([
+            'time' => $time,
+            'price' => $price,
+            'excursion_id' => $request->id
+        ]);
+
+        return redirect()->back()->with('success', 'Расписание успешно добавлено');
+    }
+
+    public function excursionScheduleDelete(Request $request): JsonResponse
+    {
+        $schedule = ExcursionSchedule::find($request->id);
+
+        if($schedule) {
+            $schedule->delete();
+
+            session()->flash('success', 'Расписание успешно удалено');
+            return response()->json([
+                'message' => 'Image was deleted',
+                'code' => 200
+            ]);
+        }
+        return response()->json([
+            'message' => 'Расписание не найдено',
+            'code' => 404
+        ]);
+
+    }
+
     public function excursionDeleteImage(Request $request): JsonResponse
     {
         $image = ExcursionImage::find($request->id);
@@ -111,7 +145,7 @@ class AdminController extends Controller
 
             $image->delete();
 
-            session(['success' => 'Картинка успешно удалена']);
+            session()->flash('success', 'Картинка успешно удалена');
             return response()->json([
                 'message' => 'Image was deleted',
                 'code' => 200

@@ -66,10 +66,10 @@
                         <input type="text" class="form-control" id="price" name="price" value="{{ old('price') }}" placeholder="Заголовок поста">
                     </div>
 
-{{--                    <div class="form-group">--}}
-{{--                        <label for="duration">Продолжительность</label>--}}
-{{--                        <input type="text" class="form-control" id="duration" name="duration" value="{{ $excursion->duration }}" placeholder="Заголовок поста">--}}
-{{--                    </div>--}}
+                    <div class="form-group">
+                        <label for="duration">Продолжительность</label>
+                        <input type="text" class="form-control" id="duration" name="duration" value="{{ old('duration') }}" placeholder="Заголовок поста">
+                    </div>
 
                     <div class="form-group">
                         <label for="age">Допустимый возраст</label>

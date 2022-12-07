@@ -30,6 +30,7 @@ class StoreExcursionRequest extends FormRequest
             'age' => ['required'],
             'place' => ['required'],
             'program' => ['required'],
+            'duration' => ['required'],
             'including' => ['required'],
             'images.*' => ['required', 'image', 'mimes:jpg,jpeg,png'],
         ];

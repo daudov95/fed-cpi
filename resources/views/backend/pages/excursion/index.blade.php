@@ -58,7 +58,7 @@
 
                                                 <td>
                                                     <div class="table-action">
-                                                        <a href="{{ route('admin.excursion.edit', ['id' => $excursion->id]) }}"  class="btn btn-block btn-outline-primary table-action__btn-edit"><i class="fas fa-calendar-alt"></i></a>
+                                                        <a href="{{ route('admin.excursion.schedule.index', ['id' => $excursion->id]) }}"  class="btn btn-block btn-outline-primary table-action__btn-edit"><i class="fas fa-calendar-alt"></i></a>
                                                         <form action="{{ route('admin.excursion.delete') }}" class="delete-route" method="POST">
                                                             @CSRF
                                                             <input type="hidden" name="id" value="{{ $excursion->id }}">

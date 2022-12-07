@@ -56,14 +56,14 @@
                                     </li>
                                     <li class="card-info-item">
                                         <span class="card-info-item__title">Ближайшая дата:</span>
-                                        <span class="card-info-item__value">1 Декабря 2022 в 13:00</span>
+                                        <span class="card-info-item__value">{{ $excursion->nearExcursion }}</span>
                                     </li>
                                 </ul>
                             </div>
                             <div class="card-price">
                                 <div class="card-price-block">
                                     <h4 class="card-price-block__title">Продолжительность</h4>
-                                    <span class="card-price-block__text">2 часа</span>
+                                    <span class="card-price-block__text">{{ $excursion->duration ? $excursion->duration : 2 }} ч.</span>
                                 </div>
                                 <div class="card-price-block">
                                     <h4 class="card-price-block__title">Цена за человека от</h4>

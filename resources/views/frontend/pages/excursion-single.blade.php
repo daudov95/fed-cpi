@@ -6,6 +6,11 @@
     rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css"
 />
+<style>
+    .card-price__btn {
+        padding: 15px;
+    }
+</style>
 @endsection
 
 @section('content')
@@ -62,7 +67,7 @@
                         <div class="card-price">
                             <div class="card-price-block">
                                 <h4 class="card-price-block__title">Продолжительность</h4>
-                                <span class="card-price-block__text">4 часа</span>
+                                <span class="card-price-block__text">{{ $excursion->duration ? $excursion->duration : 2 }} ч.</span>
                             </div>
                             <div class="card-price-block">
                                 <h4 class="card-price-block__title">Цена за человека от</h4>
@@ -75,17 +80,7 @@
                     <h2 class="card-info__title">Программа тура</h2>
                     <div class="card-info-program">
                         <div class="card-info-program__list">
-{{--                            <li class="card-info-program__item">10.00 - Цветочный парк</li>--}}
-{{--                            <li class="card-info-program__item">10.30 - Смотровая площадка высотного комплекса «Грозный Сити»</li>--}}
-{{--                            <li class="card-info-program__item">11.00 - Мечеть им. Ахмата-Хаджи Кадырова «Сердце Чечни»</li>--}}
-{{--                            <li class="card-info-program__item">12.00 - Центральная площадь им Кадырова</li>--}}
-{{--                            <li class="card-info-program__item">12.30 - Пешеходный бульвар имени Махмуда Эсамбаева</li>--}}
-{{--                            <li class="card-info-program__item">13.00 - Барский дом</li>--}}
-{{--                            <li class="card-info-program__item">13.20 - Национальный музей Чеченской Республики</li>--}}
-{{--                            <li class="card-info-program__item">14.00 - Смотровая площадка «Лестница в небеса»</li>--}}
-{{--                            <li class="card-info-program__item">Место начала / Завершения тура: Грозный / Грозный</li>--}}
                             {!! $excursion->program !!}
-                            <!-- <li class="card-info-program__item">Места показа: Россия, Чеченская Республика, г. Грозный</li> -->
                         </div>
                     </div>
 
@@ -103,19 +98,19 @@
                     <div class="single-card__table">
 
                         <ul class="single-card__list">
-                            @if(isset($excursion->schedules))
-                                @foreach($excursion->schedules as $schedule)
+                            @if(isset($schedules))
+                                @foreach($schedules as $schedule)
                                     <li class="single-card-item">
                                         <div class="single-card-item__date">
                                             <h4 class="single-card-item__title">Дата</h4>
-                                            <span class="single-card-item__value">{{ $schedule->time }}</span>
+                                            <span class="single-card-item__value">{{ $schedule->customDate }}</span>
                                         </div>
                                         <div class="single-card-item__price">
                                             <h4 class="single-card-item__title">Цена за человека от</h4>
                                             <span class="single-card-item__value">{{ $schedule->price }} руб.</span>
                                         </div>
                                         <div class="single-card-item__btn">
-                                            <a href="#" class="card-price__btn">Забронировать</a>
+                                            <a href="{{ route('payment.index', ['id' => $schedule->id]) }}" class="card-price__btn">Забронировать</a>
                                         </div>
                                     </li>
                                 @endforeach

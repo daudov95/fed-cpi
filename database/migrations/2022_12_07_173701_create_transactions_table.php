@@ -13,16 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('excursions', function (Blueprint $table) {
+        Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->text('description');
-            $table->string('age');
+            $table->string('name');
             $table->string('price');
-            $table->string('place');
-            $table->text('program');
-            $table->text('duration');
-            $table->string('including');
+            $table->string('excursion');
+            $table->string('description')->nullable();
+            $table->string('order_id');
+            $table->string('session_id');
+            $table->enum('status', ['CREATED', 'CANCELED', 'SUCCESS'])->default('CREATED');
             $table->timestamps();
         });
     }
@@ -34,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('excursions');
+        Schema::dropIfExists('transactions');
     }
 };

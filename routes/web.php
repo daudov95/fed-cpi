@@ -8,6 +8,7 @@ use App\Http\Controllers\Frontend\EventController;
 use App\Http\Controllers\Frontend\ExcursionController;
 use App\Http\Controllers\Frontend\LegislationController;
 use App\Http\Controllers\Frontend\PaymentController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,12 +22,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('frontend.pages.excursions');
-});
 
 /* Routs for guests */
-Route::middleware('guest')->group(function () {
+Route::group(['middleware'], function () {
 
     /* Excursion */
     Route::get('/', [ExcursionController::class, 'index'])->name('index');
@@ -41,11 +39,12 @@ Route::middleware('guest')->group(function () {
 
     /* Payment */
     Route::get('/details/payment', [DetailsController::class, 'payment'])->name('payment');
-    Route::get('/payment/success', [PaymentController::class, 'success'])->name('payment.success');
-    Route::get('/payment/cancel', [PaymentController::class, 'cancel'])->name('payment.cancel');
-    Route::get('/payment/error', [PaymentController::class, 'error'])->name('payment.error');
+    Route::match(['get', 'post'], '/payment/success', [PaymentController::class, 'success'])->name('payment.success');
+    Route::match(['get', 'post'], '/payment/cancel', [PaymentController::class, 'cancel'])->name('payment.cancel');
+    Route::match(['get', 'post'], '/payment/error', [PaymentController::class, 'error'])->name('payment.error');
     Route::get('/payment/{id}', [PaymentController::class, 'payment'])->name('payment.index');
     Route::post('/payment/{id}', [PaymentController::class, 'paymentStore'])->name('payment.store');
+    Route::get('/payment/order/{order_id}:{session_id}', [PaymentController::class, 'orderInfo'])->name('payment.order');
 
     /* Details */
     Route::get('/details', [DetailsController::class, 'index'])->name('details');
@@ -59,7 +58,7 @@ Route::middleware('guest')->group(function () {
 });
 
 /* Routes for admin */
-Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
+Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'isAdmin']], function () {
 
     /* Dashboard */
     Route::get('/', [AdminController::class, 'index'])->name('index');
@@ -78,6 +77,17 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
         Route::post('/edit/{id}/schedule-delete', [AdminController::class, 'excursionScheduleDelete'])->name('schedule.delete');
     });
 
+    /* Transaction */
+    Route::group(['prefix' => 'transaction', 'as' => 'transaction.'], function () {
+        Route::get('/', [AdminController::class, 'transaction'])->name('index');
+        Route::post('/delete', [AdminController::class, 'transactionDelete'])->name('delete');
+    });
 
     /* Others */
-})->middleware('guest');
+})->middleware('auth');
+
+
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

@@ -11,10 +11,10 @@
   <link rel="stylesheet" href="{{ asset("assets/admin/plugins/fontawesome-free/css/all.min.css") }}">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
- 
+
   <!-- Theme style -->
   <link rel="stylesheet" href="{{ asset("assets/admin/css/adminlte.min.css") }}">
-  
+
   <!-- Daterange picker -->
   <link rel="stylesheet" href="{{ asset("assets/admin/plugins/daterangepicker/daterangepicker.css") }}">
   <!-- summernote -->
@@ -44,12 +44,30 @@
         <a href="{{ route('index') }}" class="nav-link">Главная</a>
       </li>
     </ul>
-    
+
 
     <!-- Right navbar links -->
-    {{-- <ul class="navbar-nav ml-auto"> --}}
+     <ul class="navbar-nav ml-auto">
       <!-- Navbar Search -->
-        
-    {{-- </ul> --}}
+         <li class="nav-item">
+             <form action="{{ route('logout') }}" method="POST">
+                 @csrf
+                 <button class="nav-link admin__logout">
+                     <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M320 176v-40a40 40 0 0 0-40-40H88a40 40 0 0 0-40 40v240a40 40 0 0 0 40 40h192a40 40 0 0 0 40-40v-40m64-160 80 80-80 80m-193-80h273"/></svg>
+                 </button>
+             </form>
+         </li>
+     </ul>
   </nav>
   <!-- /.navbar -->
+
+<style>
+    .admin__logout {
+        border: none;
+        background-color: transparent;
+        padding: 0 10px !important;
+    }
+    .admin__logout svg {
+        width: 20px;
+    }
+</style>

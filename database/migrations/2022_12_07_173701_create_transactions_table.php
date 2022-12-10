@@ -16,12 +16,17 @@ return new class extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('phone');
+            $table->string('email');
             $table->string('price');
-            $table->string('excursion');
+            $table->string('date');
+            $table->string('excursion_id');
             $table->string('description')->nullable();
             $table->string('order_id');
             $table->string('session_id');
-            $table->enum('status', ['CREATED', 'CANCELED', 'SUCCESS'])->default('CREATED');
+            $table->string('tran_id')->nullable();
+            $table->string('tran_time')->nullable();
+            $table->enum('status', ['CREATED', 'CANCELED', 'DECLINED', 'ERROR', 'SUCCEEDED'])->default('CREATED');
             $table->timestamps();
         });
     }

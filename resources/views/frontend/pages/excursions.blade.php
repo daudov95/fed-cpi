@@ -67,7 +67,7 @@
                                 </div>
                                 <div class="card-price-block">
                                     <h4 class="card-price-block__title">Цена за человека от</h4>
-                                    <span class="card-price-block__price">{{ $excursion->price }} руб.</span>
+                                    <span class="card-price-block__price">{{ $excursion->format_price }} руб.</span>
                                 </div>
                                 <a href="{{ route('single-excursion', ['id' => $excursion->id]) }}" class="card-price__btn">Посмотреть</a>
                             </div>

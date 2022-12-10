@@ -42,4 +42,15 @@ class Excursion extends Model
     {
         return $this->schedules()->where('time', '>', time())->orderBy('time', 'ASC')->first()->customDate ?? 'Нет данных';
     }
+
+    public function getFloatPriceAttribute(): string
+    {
+        return number_format($this->price, 2, '', '');
+    }
+
+    public function getFormatPriceAttribute(): string
+    {
+        return number_format($this->price, 0, '', ' ');
+    }
+
 }

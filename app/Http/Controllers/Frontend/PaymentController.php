@@ -4,10 +4,13 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Payment\StorePaymentRequest;
+use App\Mail\OrderExcursion;
 use App\Models\Excursion;
 use App\Models\ExcursionSchedule;
+use App\Models\Transaction;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class PaymentController extends Controller
 {
@@ -16,19 +19,96 @@ class PaymentController extends Controller
         return view('frontend.pages.payment');
     }
 
-    public function success(): View
+    public function orderInfo($order_id, $session_id)
     {
-        return view('frontend.pages.payment.success');
+        $response = $this->orderStatusInfo($order_id, $session_id);
+        dd($response);
     }
 
-    public function cancel(): View
+    public function success(Request $request): View
     {
-        return view('frontend.pages.payment.cancel');
+        if($request->method() == 'GET') {
+            return abort(404);
+        }
+
+
+        $xml = base64_decode($request->xmlmsg);
+        $response = $this->xmlToJson($xml);
+
+        $order_status = $this->createOrderStatusXml($response->OrderID, $response->SessionID);
+        $order_status = $this->xmlToJson($this->responseOrder($order_status))->Response;
+
+        if($order_status->Status === "00" && $order_status->Order->OrderStatus === 'APPROVED') {
+            $transaction = Transaction::query()->where('order_id', $response->OrderID)->first();
+            $status = $response->OrderStatus == 'APPROVED' ? 'SUCCEEDED' : 'ERROR';
+
+            $transaction->update([
+                'description' => $response->ResponseDescription,
+                'status' => $status,
+                'tran_id' => $response->TranId,
+                'tran_time' => $response->TranDateTime,
+            ]);
+
+            Mail::to($transaction->email)->send(new OrderExcursion($transaction));
+
+            return view('frontend.pages.payment.success');
+        }
+       return abort(402);
     }
 
-    public function error(): View
+    public function cancel(Request $request): View
     {
-        return view('frontend.pages.payment.error');
+        if($request->method() == 'GET') {
+            return abort(404);
+        }
+
+        $xml = base64_decode($request->xmlmsg);
+        $response = $this->xmlToJson($xml);
+
+        $order_status = $this->createOrderStatusXml($response->OrderID, $response->SessionID);
+        $order_status = $this->xmlToJson($this->responseOrder($order_status))->Response;
+
+        if($order_status->Status === "00" && $order_status->Order->OrderStatus === 'CANCELED') {
+            $transaction = Transaction::query()->where('order_id', $response->OrderID)->first();
+            $status = $response->OrderStatus == 'CANCELED' ? 'CANCELED' : 'ERROR';
+
+            $transaction->update([
+                'description' => $response->OrderStatusScr,
+                'status' => $status,
+                'tran_time' => $response->TranDateTime,
+            ]);
+            return view('frontend.pages.payment.cancel');
+        }
+
+        return abort(402);
+    }
+
+    public function error(Request $request): View
+    {
+        if($request->method() == 'GET') {
+            return abort(404);
+        }
+
+        $xml = base64_decode($request->xmlmsg);
+        $response = $this->xmlToJson($xml);
+
+        $order_status = $this->createOrderStatusXml($response->OrderID, $response->SessionID);
+        $order_status = $this->xmlToJson($this->responseOrder($order_status))->Response;
+
+        if($order_status->Status === "00" && $order_status->Order->OrderStatus === 'DECLINED') {
+            $transaction = Transaction::query()->where('order_id', $response->OrderID)->first();
+            $status = $response->OrderStatus == 'DECLINED' ? 'DECLINED' : 'ERROR';
+
+            $transaction->update([
+                'description' => $response->ResponseDescription,
+                'status' => $status,
+                'tran_id' => $response->TranId,
+                'tran_time' => $response->TranDateTime,
+            ]);
+            return view('frontend.pages.payment.error');
+        }
+
+        return abort(402);
     }
 
     public function payment($id): View
@@ -39,39 +119,105 @@ class PaymentController extends Controller
 
     public function paymentStore(StorePaymentRequest $request)
     {
-//        dd(asset('storage/payment/banktestcanew.crt'));
-        // корневой сертификат банка
-        $caFile = asset('storage/payment/banktestcanew.crt');
-        // сертификат торговца
-        $certFile = asset('storage/payment/2000214.crt');
-        // ключ сертификата
-        $keyFile = asset('storage/payment/user.key');
-        // пароль ключа (если есть)
-        $privateCertPass = 'qwe23yks5';
-        // идентификатор мерчанта
-        $mid = '2000214';
-        // адрес для отправки запроса
-        $serverURI = 'https://91.208.121.39:7443/Exec';
+        $excursion_schedule = ExcursionSchedule::find($request->id);
+        $excursion = $excursion_schedule->excursion;
+        $description = $excursion->title . ' - '. $excursion->id;
 
+        $xml = $this->createOrderXml('CreateOrder', 'Purchase', $excursion_schedule->float_price, $description);
+        $response = $this->responseOrder($xml);
+        $response = $this->xmlToJson($response)->Response;
+
+        $newTransaction = Transaction::create([
+            'name' => $request->name,
+            'phone' => $request->phone,
+            'email' => $request->email,
+            'price' => $excursion_schedule->price,
+            'date' => $excursion_schedule->custom_date,
+            'excursion_id' => $request->id,
+            'order_id' => $response->Order->OrderID,
+            'session_id' => $response->Order->SessionID,
+        ]);
+
+        $urlToParams = [
+            'ORDERID' => $response->Order->OrderID,
+            'SESSIONID' => $response->Order->SessionID,
+        ];
+
+        $urlTo = $response->Order->URL.'?'.http_build_query($urlToParams);
+
+        if($response->Status === "00"){
+            return redirect()->away($urlTo);
+        }
+    }
+
+    public function orderStatusInfo($OrderID, $SessionID)
+    {
+
+        $order_status = $this->createOrderStatusXml($OrderID, $SessionID);
+        $order_status = $this->xmlToJson($this->responseOrder($order_status))->Response;
+
+        return$order_status;
+    }
+
+    public function createOrderXml(string $operation = 'CreateOrder', string $order_type = 'Purchase', string $amount, string $description = 'Test'): string
+    {
+        // идентификатор мерчанта
+        $mid = env('MID');
 
         // исходящее xml_сообщение
         $xml = '<?xml version="1.0" encoding="UTF-8"?>';
         $xml .= '<TKKPG>';
         $xml .= '<Request>';
-        $xml .= '<Operation>CreateOrder</Operation>';
+        $xml .= '<Operation>'.$operation.'</Operation>';
         $xml .= '<Language>RU</Language>';
         $xml .= '<Order>';
-        $xml .= '<OrderType>Purchase</OrderType>';
+        $xml .= '<OrderType>'.$order_type.'</OrderType>';
         $xml .= '<Merchant>'.$mid.'</Merchant>';
-        $xml .= '<Amount>15000</Amount>';
+        $xml .= '<Amount>'.$amount.'</Amount>';
         $xml .= '<Currency>643</Currency>';
-        $xml .= '<Description>Test</Description>';
-        $xml .= '<ApproveURL>https://fed-cpi.ru/payment/success</ApproveURL>';
-        $xml .= '<CancelURL>https://fed-cpi.ru/payment/cancel</CancelURL>';
-        $xml .= '<DeclineURL>https://fed-cpi.ru/payment/error</DeclineURL>';
+        $xml .= '<Description>'.$description.'</Description>';
+        $xml .= '<ApproveURL>http://127.0.0.1:8000/payment/success</ApproveURL>';
+        $xml .= '<CancelURL>http://127.0.0.1:8000/payment/cancel</CancelURL>';
+        $xml .= '<DeclineURL>http://127.0.0.1:8000/payment/error</DeclineURL>';
         $xml .= '</Order>';
         $xml .= '</Request>';
         $xml .= '</TKKPG>';
+        return $xml;
+    }
+
+    public function createOrderStatusXml($order_id, $session_id): string
+    {
+        // идентификатор мерчанта
+        $mid = env('MID');
+
+        // исходящее xml_сообщение
+        $xml = '<?xml version="1.0" encoding="UTF-8"?>';
+        $xml .= '<TKKPG>';
+        $xml .= '<Request>';
+        $xml .= '<Operation>GetOrderStatus</Operation>';
+        $xml .= '<Language>RU</Language>';
+        $xml .= '<Order>';
+        $xml .= '<Merchant>'.$mid.'</Merchant>';
+        $xml .= '<OrderID>'.$order_id.'</OrderID>';
+        $xml .= '</Order>';
+        $xml .= '<SessionID>'.$session_id.'</SessionID>';
+        $xml .= '</Request>';
+        $xml .= '</TKKPG>';
+        return $xml;
+    }
+
+    public function responseOrder($xml): string
+    {
+        // корневой сертификат банка
+        $caFile = storage_path('app/files/payment/'). 'banktestcanew.pem';
+        // сертификат торговца
+        $certFile = storage_path('app/files/payment/'). '2000214.crt';
+        // ключ сертификата
+        $keyFile = storage_path('app/files/payment/'). 'user.key';
+        // пароль ключа (если есть)
+        $privateCertPass = env('PRIVATE_CERT_PASS', null);
+        // адрес для отправки запроса
+        $serverURI = env('SERVER_URI_PAYMENT', null);
 
         $ch = curl_init($serverURI);
         curl_setopt($ch, CURLOPT_POST, 1);
@@ -91,10 +237,19 @@ class PaymentController extends Controller
         // ответ TWPG
         $xmlResponse = curl_exec($ch);
 
-        // 0 - успешное выполнение запроса
-        echo curl_errno($ch);
-
-//        dd($request->all());
-//        return view('frontend.pages.payment.index');
+        if(curl_errno($ch) === 0){
+            return $xmlResponse;
+        }
+        return 'ERROR: CHECK PATHS';
     }
+
+    public function xmlToJson($xml)
+    {
+        $xml = simplexml_load_string($xml);
+        $xml = json_encode($xml);
+        $xml = json_decode($xml,false);
+
+        return $xml;
+    }
+
 }

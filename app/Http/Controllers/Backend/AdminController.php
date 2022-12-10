@@ -7,9 +7,11 @@ use App\Http\Requests\Excursion\DeleteExcursionRequest;
 use App\Http\Requests\Excursion\StoreExcursionRequest;
 use App\Http\Requests\Excursion\StoreScheduleRequest;
 use App\Http\Requests\Excursion\UpdateExcursionRequest;
+use App\Http\Requests\Transaction\DeleteTransactionRequest;
 use App\Models\Excursion;
 use App\Models\ExcursionImage;
 use App\Models\ExcursionSchedule;
+use App\Models\Transaction;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -21,7 +23,9 @@ class AdminController extends Controller
 {
     public function index(): View
     {
-        return view('backend.pages.dashboard');
+        $info = ['excursion' => Excursion::count(), 'transaction' => Transaction::count()];
+
+        return view('backend.pages.dashboard', compact('info'));
     }
 
     public function excursion(): View
@@ -199,4 +203,23 @@ class AdminController extends Controller
         return $images_url;
     }
 
+
+    /* Transaction */
+    public function transaction()
+    {
+        $transactions = Transaction::orderBy('id', 'DESC')->paginate(9);
+        return view('backend.pages.transaction.index', compact('transactions'));
+    }
+
+    public function transactionDelete(DeleteTransactionRequest $request): RedirectResponse
+    {
+        $transaction = Transaction::find($request->id);
+
+        if($transaction) {
+            $transaction->delete();
+            session()->flash('success', 'Транзакция успешно удалена');
+        }
+
+        return redirect()->back();
+    }
 }

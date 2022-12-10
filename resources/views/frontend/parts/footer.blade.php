@@ -22,6 +22,14 @@
                     <li class="footer__item">
                         <a href="{{ route('contacts') }}" class="footer__link">Контакты</a>
                     </li>
+                    @auth()
+                        @if(Auth()->user()->is_admin)
+                            <li class="footer__item">
+                                <a href="{{ route('admin.index') }}" class="footer__link">Админка</a>
+                            </li>
+                        @endif
+                    @endauth
+
                 </ul>
             </div>
             <div class="footer__col">

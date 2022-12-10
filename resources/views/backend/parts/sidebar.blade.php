@@ -33,9 +33,8 @@
 
 {{--{{ explode('.', request()->route()->getName())[1] == 'section' ? 'menu-open' : '' }}--}}
           <li class="nav-item ">
-{{--              {{ explode('.', request()->route()->getName())[1] == 'section' ? 'active' : '' }}--}}
             <a href="{{ route('admin.excursion.index') }}" class="nav-link ">
-              <i class="nav-icon fas fa-window-restore"></i>
+              <i class="nav-icon fas fa-hiking"></i>
               <p>
                 Экскурсии
                 <i class="fas fa-angle-left right"></i>
@@ -59,6 +58,24 @@
             </ul>
           </li>
 
+        <li class="nav-item ">
+            <a href="{{ route('admin.transaction.index') }}" class="nav-link ">
+                <i class="nav-icon fas fa-money-bill"></i>
+                <p>
+                    Транзакции
+                    <i class="fas fa-angle-left right"></i>
+                </p>
+            </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="{{ route('admin.transaction.index') }}" class="nav-link">
+                        <i class="far fas fa-list nav-icon"></i>
+                        <p>Все транзакции</p>
+                    </a>
+                </li>
+
+            </ul>
+        </li>
 
 
 

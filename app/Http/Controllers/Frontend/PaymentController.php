@@ -176,9 +176,9 @@ class PaymentController extends Controller
         $xml .= '<Amount>'.$amount.'</Amount>';
         $xml .= '<Currency>643</Currency>';
         $xml .= '<Description>'.$description.'</Description>';
-        $xml .= '<ApproveURL>http://127.0.0.1:8000/payment/success</ApproveURL>';
-        $xml .= '<CancelURL>http://127.0.0.1:8000/payment/cancel</CancelURL>';
-        $xml .= '<DeclineURL>http://127.0.0.1:8000/payment/error</DeclineURL>';
+        $xml .= '<ApproveURL>'.route('payment.success').'</ApproveURL>';
+        $xml .= '<CancelURL>'.route('payment.cancel').'</CancelURL>';
+        $xml .= '<DeclineURL>'.route('payment.error').'</DeclineURL>';
         $xml .= '</Order>';
         $xml .= '</Request>';
         $xml .= '</TKKPG>';

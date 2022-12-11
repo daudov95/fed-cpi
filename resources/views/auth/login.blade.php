@@ -11,7 +11,11 @@
         margin-left: 5px;
         cursor: pointer;
     }
-
+    .invalid-feedback {
+        font-size: 14px;
+        margin-bottom: 5px;
+        display: block;
+    }
 </style>
 
 @section('content')
@@ -24,18 +28,18 @@
             <div class="contacts-form">
                 <form method="POST" action="{{ route('login') }}">
                     @csrf
-                    <input type="email" name="email" value="{{ old('email') }}" placeholder="E-mail" required class="contacts-form__input">
                     @error('email')
-                        <span class="invalid-feedback" role="alert">
+                    <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                    <input type="email" name="email" value="{{ old('email') }}" placeholder="E-mail" required class="contacts-form__input">
+                    @error('password')
+                    <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
                     @enderror
                     <input type="password" name="password" value="{{ old('password') }}" placeholder="Пароль" required class="contacts-form__input">
-                    @error('password')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
 
                     <div class="login-remember">
                         <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>

@@ -29,4 +29,13 @@ class StoreScheduleRequest extends FormRequest
             'schedule_price' => ['required'],
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'id.required' => 'Id отсутствует',
+            'schedule_time.required' => 'Укажите Время',
+            'schedule_price.required' => 'Укажите Цену',
+        ];
+    }
 }

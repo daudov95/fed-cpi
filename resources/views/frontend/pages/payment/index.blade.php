@@ -70,15 +70,6 @@
     <section class="section about">
         <div class="container">
             <div class="about__wrap">
-                @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul style="margin-bottom: 0px">
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
 
                 @if(Session::has('success'))
                     <div class="alert alert-success">
@@ -110,13 +101,35 @@
                         </div>
                     </div>
 
+                    @if ($errors->any())
+                        <style>
+                            .alert {
+                                border: 1px solid #ebebeb;
+                                padding: 15px;
+                                display: inline-block;
+                                margin-bottom: 10px;
+                            }
+                            .alert li:not(:last-child) {
+                                margin-bottom: 5px;
+                            }
+                        </style>
+                        <div class="alert alert-danger">
+                            <ul style="margin-bottom: 0px">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
                     <div class="payment__form">
                         <form action="{{ route('payment.store', ['id' => 1]) }}" method="POST">
                             @csrf
                             <input type="hidden" name="id" value="{{ $schedule->id }}">
-                            <input type="text" name="name" placeholder="ФИО" class="contacts-form__input">
-                            <input type="text" name="phone" placeholder="Телефон" class="contacts-form__input">
-                            <input type="email" name="email" placeholder="E-mail" class="contacts-form__input">
+
+                            <input type="text" name="name" placeholder="ФИО" class="contacts-form__input" required>
+                            <input type="text" name="phone" id="phone-mask" placeholder="Телефон" class="contacts-form__input" required>
+                            <input type="email" name="email" placeholder="E-mail" class="contacts-form__input" required>
                             <button type="submit" class="contacts-form__btn card-price__btn">Оформить</button>
                         </form>
                     </div>
@@ -126,4 +139,16 @@
         </div>
 
     </section>
+@endsection
+
+@section('custom_scripts')
+    <script src="{{ asset('assets/js/imask.min.js') }}"></script>
+    <script>
+        if(document.getElementById('phone-mask')) {
+          let phoneMask = IMask(
+            document.getElementById('phone-mask'), {
+            mask: '+{7}(000) 000-00-00'
+          });
+        }
+    </script>
 @endsection

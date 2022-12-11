@@ -61,7 +61,7 @@
                                                 <td class="dtr-control sorting_1">{{ $transaction->phone }}</td>
                                                 <td class="dtr-control sorting_1">{{ $transaction->email }}</td>
                                                 <td class="dtr-control sorting_1">{{ $transaction->price }}</td>
-                                                <td class="dtr-control sorting_1">{{ $transaction->description }}</td>
+                                                <td class="dtr-control sorting_1">{{ $transaction->description ? $transaction->description : 'Ожидание оплаты/истекло время' }}</td>
                                                 <td class="dtr-control sorting_1">{{ $transaction->updated_at }}</td>
 
                                                 <td>

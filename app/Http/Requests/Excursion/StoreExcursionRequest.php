@@ -35,4 +35,19 @@ class StoreExcursionRequest extends FormRequest
             'images.*' => ['required', 'image', 'mimes:jpg,jpeg,png'],
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'title.required' => 'Укажите Заголовок',
+            'description.required' => 'Укажите Описание',
+            'price.required' => 'Укажите Цену',
+            'age.required' => 'Укажите Допустимый возраст',
+            'place.required' => 'Укажите Места показа',
+            'program.required' => 'Укажите Программу тура',
+            'duration.required' => 'Укажите Продолжительность',
+            'including.required' => 'Укажите что в стоимость тура включено',
+            'images.required' => 'Выберите Картинки',
+        ];
+    }
 }

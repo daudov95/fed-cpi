@@ -29,4 +29,14 @@ class StorePaymentRequest extends FormRequest
             'email' => ['required', 'email'],
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'name.required' => 'Укажите ФИО',
+            'phone.required' => 'Укажите Номер телефона',
+            'email.required' => 'Укажите E-mail',
+            'email.email' => 'Укажите правильный E-mail адрес',
+        ];
+    }
 }

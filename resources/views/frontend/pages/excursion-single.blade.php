@@ -60,7 +60,7 @@
                                 </li>
                                 <li class="card-info-item">
                                     <span class="card-info-item__title">Ближайшая дата:</span>
-                                    <span class="card-info-item__value">30 ноября 2022 в 14:00</span>
+                                    <span class="card-info-item__value">{{ $excursion->nearExcursion }}</span>
                                 </li>
                             </ul>
                         </div>
@@ -70,7 +70,7 @@
                                 <span class="card-price-block__text">{{ $excursion->duration ? $excursion->duration : 2 }} ч.</span>
                             </div>
                             <div class="card-price-block">
-                                <h4 class="card-price-block__title">Цена за человека от</h4>
+                                <h4 class="card-price-block__title">Цена за человека</h4>
                                 <span class="card-price-block__price">{{ $excursion->format_price }} руб.</span>
                             </div>
                             <a href="#timetable" class="card-price__btn card-price__scroll">Расписание</a>
@@ -106,7 +106,7 @@
                                             <span class="single-card-item__value">{{ $schedule->customDate }}</span>
                                         </div>
                                         <div class="single-card-item__price">
-                                            <h4 class="single-card-item__title">Цена за человека от</h4>
+                                            <h4 class="single-card-item__title">Цена за человека</h4>
                                             <span class="single-card-item__value">{{ $schedule->format_price }} руб.</span>
                                         </div>
                                         <div class="single-card-item__btn">

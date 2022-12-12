@@ -66,7 +66,7 @@
                                     <span class="card-price-block__text">{{ $excursion->duration ? $excursion->duration : 2 }} ч.</span>
                                 </div>
                                 <div class="card-price-block">
-                                    <h4 class="card-price-block__title">Цена за человека от</h4>
+                                    <h4 class="card-price-block__title">Цена за человека</h4>
                                     <span class="card-price-block__price">{{ $excursion->format_price }} руб.</span>
                                 </div>
                                 <a href="{{ route('single-excursion', ['id' => $excursion->id]) }}" class="card-price__btn">Посмотреть</a>

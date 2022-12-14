@@ -95,7 +95,9 @@
         linkActive.classList.add('active')
         linkActive.closest('.nav-pills > .nav-item').classList.add('menu-open')
 
-        navLinks.previousElementSibling?.classList.add('active')
+        if(navLinks) {
+            navLinks.previousElementSibling?.classList.add('active')
+        }
 
     }
 </script>

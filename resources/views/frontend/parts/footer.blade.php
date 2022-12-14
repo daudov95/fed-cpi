@@ -93,4 +93,4 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="{{ asset('assets/js/custom.js')  }}"></script>
 
-@yield('custom_scripts')
+@yield('custom_script')

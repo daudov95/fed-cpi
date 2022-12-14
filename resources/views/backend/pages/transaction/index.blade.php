@@ -99,5 +99,18 @@
 
 
 @section('custom_script')
-    <script src="{{ asset("assets/js/admin.js") }}"></script>
+    <script>
+        let deleteBtns = document.querySelectorAll('.table-action__btn-delete');
+
+        deleteBtns.forEach(link => {
+            link.addEventListener('click', e => {
+                e.preventDefault()
+                let form = e.currentTarget.closest('.delete-route');
+                let question = confirm('Вы действительно хотите удалить ?');
+                if(question) {
+                    form.submit()
+                }
+            })
+        })
+    </script>
 @endsection

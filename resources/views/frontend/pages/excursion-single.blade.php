@@ -128,7 +128,7 @@
 @endsection
 
 
-@section('custom_scripts')
+@section('custom_script')
     <script src="{{ asset('assets/js/swiper-bundle.min.js') }}"></script>
 
     <script>

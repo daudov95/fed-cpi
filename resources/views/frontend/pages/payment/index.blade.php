@@ -141,7 +141,7 @@
     </section>
 @endsection
 
-@section('custom_scripts')
+@section('custom_script')
     <script src="{{ asset('assets/js/imask.min.js') }}"></script>
     <script>
         if(document.getElementById('phone-mask')) {

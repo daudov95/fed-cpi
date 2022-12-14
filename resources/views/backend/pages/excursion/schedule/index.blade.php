@@ -125,18 +125,24 @@
                 const link = e.currentTarget.href;
                 const id = Number(e.currentTarget.dataset.id);
 
+                let question = confirm('Вы действительно хотите удалить ?');
+
+
+
                 try {
-                    const response = await fetch(link, {
-                        method: 'POST',
-                        body: JSON.stringify({id: id}),
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': csrf
-                        }
-                    })
+                    if(question) {
+                        const response = await fetch(link, {
+                            method: 'POST',
+                            body: JSON.stringify({id: id}),
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': csrf
+                            }
+                        })
 
+                        window.location.reload()
+                    }
 
-                    window.location.reload()
                 }catch (e) {
                     console.log('error');
                 }
